@@ -1,0 +1,44 @@
+extends mobile-layout
+
+block content
+    .page
+        h1.text-center 发起出勤统计
+
+        #toast(role='alert' style='display: none;')
+            .weui-mask_transparent
+            .weui-toast
+                i.weui-icon-success-no-circle.weui-icon_toast
+                p.weui-toast__content 已生成并复制链接
+
+        .weui-form
+            .weui-cells__group.weui-cells__group_form
+                label.disabled-gb.weui-cell.weui-cell_active(for='uniCode')
+                    .weui-cell__hd
+                        span.weui-label 联盟
+                    .weui-cell__bd
+                        input#uniCodeInput.weui-input(value='TC-天衍' disabled="disabled")
+
+                label.disabled-gb.weui-cell.weui-cell_active(for='time')
+                    .weui-cell__hd
+                        span.weui-label 时间
+                    .weui-cell__bd
+                        input#timeInput.weui-input(value='TC-天衍' disabled="disabled")
+
+                #commanderPicker.weui-cell.weui-cell_active.weui-cell_select.weui-cell_select-after(role='button' aria-haspopup='listbox')
+                    .weui-cell__hd
+                        label.weui-label 指挥
+                    .weui-cell__bd
+                        #commander.weui-select 生言
+
+            a#confirmBtn.weui-btn.weui-btn_primary(href='javascript:' role='button' style='margin-top:36px;') 发起
+
+
+            #appendLinkContainer.weui-cells__group.weui-cells__group_form(style='display: none;')
+                .weui-cells__title 分享填写链接给成员填写
+                .weui-cells.weui-cells_form
+                    .weui-cell.weui-cell_active
+                    .weui-cell__bd
+                        textarea#appendLink.weui-textarea(rows='3')
+
+
+    script(src='/javascripts/start-attendance.js')

@@ -1,0 +1,45 @@
+extends mobile-layout
+
+block content
+    .page
+        #imagePreview(style='display: none;')
+        #toast(role='alert' style='display: none;')
+            .weui-mask_transparent
+            .weui-toast
+                i.weui-primary-loading.weui-icon_toast
+                p#toastText.weui-toast__content 等待中
+        
+        h3.text-center=uniCode+'  '+time
+            span.tag(style='font-size: 12px;')=status===1?'进行中':'已确认'
+            #commander='指挥：'+commander
+                
+        
+        #echart(style='width:90vw;height:240px;margin:auto;')
+        h3#totalNum.text-center 总计：0人
+        #resultList.card
+
+
+
+        #infoList
+
+        if status===1
+            #confirmContainer.weui-form
+                .text-center 结束统计
+                .weui-cells__group.weui-cells__group_form
+                    label.weui-cell.weui-cell_active(for='legion')
+                        .weui-cell__hd
+                            span.weui-label 拒绝编码
+                            .weui-cell__desc 逗号分隔
+                        .weui-cell__bd
+                            input#rejectListInput.weui-input
+                    label.weui-cell.weui-cell_active(for='pwd')
+                        .weui-cell__hd
+                            span.weui-label 操作密码
+                        .weui-cell__bd
+                            input#pwdInput.weui-input
+
+                a#confirmBtn.weui-btn.weui-btn_primary(href='javascript:' role='button' style='margin-top:36px;') 结束统计
+        else 
+            .card 已结束统计
+    script(src='/javascripts/echarts-pie.min.js')
+    script(src='/javascripts/attendance-report.js')

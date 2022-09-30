@@ -1,0 +1,70 @@
+extends mobile-layout
+
+block content
+    .page
+        h1.text-center 填写出勤
+
+        #toast(role='alert' style='display: none;')
+            .weui-mask_transparent
+            .weui-toast
+                i.weui-primary-loading.weui-icon_toast
+                p#toastText.weui-toast__content 请填写完整信息
+
+        #imagePreview(style='display: none;')
+
+        .weui-form
+            .weui-cells__group.weui-cells__group_form
+                label.disabled-gb.weui-cell.weui-cell_active(for='uniCode')
+                    .weui-cell__hd
+                        span.weui-label 联盟
+                    .weui-cell__bd
+                        input#uniCodeInput.weui-input(value=uniCode disabled="disabled")
+
+                label.disabled-gb.weui-cell.weui-cell_active(for='time')
+                    .weui-cell__hd
+                        span.weui-label 时间
+                    .weui-cell__bd
+                        input#timeInput.weui-input(value=time disabled="disabled")
+
+                #commanderPicker.disabled-gb.weui-cell.weui-cell_active.weui-cell_select.weui-cell_select-after(role='button' aria-haspopup='listbox')
+                    .weui-cell__hd
+                        label.weui-label 指挥
+                    .weui-cell__bd
+                        #commander.weui-select=commander
+
+                label.weui-cell.weui-cell_active(for='legion')
+                    .weui-cell__hd
+                        span.weui-label 军团
+                        .weui-cell__desc 英文编号
+                    .weui-cell__bd
+                        input#legionInput.weui-input
+
+                    label.weui-cell.weui-cell_active(for='js_input3')
+
+
+                label.weui-cell.weui-cell_active(for='playerName')
+                    .weui-cell__hd
+                        span.weui-label 名称
+                        .weui-cell__desc 角色名
+                    .weui-cell__bd
+                        input#playerName.weui-input
+
+                #warshipPicker.weui-cell.weui-cell_active.weui-cell_select.weui-cell_select-after(role='button' aria-haspopup='listbox')
+                    .weui-cell__hd
+                        label.weui-label 舰船
+                    .weui-cell__bd
+                        #warship.weui-select 战巡火力
+            
+            .weui-uploader__hd(role='option' aria-labelledby='js_uploader_title js_a11y_comma js_uploader_current_num js_uploader_unit js_a11y_comma js_uploader_max_tips js_uploader_max_num js_uploader_unit')
+                p#js_uploader_title.weui-uploader__title.pl-16 图片上传
+
+            .weui-uploader__bd.ml-16
+                li#imageSmallPreview.weui-uploader__file.size-contain(style='display: none;')
+                #uploaderInputContainer.weui-uploader__input-box
+                    input#uploaderInput.weui-uploader__input(type='file' accept='image/*' multiple='false')              
+
+            a#confirmBtn.weui-btn.weui-btn_primary(href='javascript:' role='button' style='margin-top:36px;') 提交
+
+            a#reportLink(href="" style="text-align: right; margin-top: 24px;") 查看统计
+
+    script(src='/javascripts/append-attendance.js')
