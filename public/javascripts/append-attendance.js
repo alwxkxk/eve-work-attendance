@@ -104,7 +104,7 @@ const toast = document.querySelector('#toast')
 const confirmBtn = document.querySelector('#confirmBtn')
 const confirmHandle = ()=>{
     // console.log('填写：',warship.innerHTML,uploaderInput.files)
-    if(!warship.innerHTML || !legionInput.value || !playerName.value || !uploaderInput.files[0]){
+    if(!warship.innerHTML || !legionInput.value || !playerName.value){
         toast.style.display = 'block'
 
         setTimeout(() => {
@@ -113,8 +113,9 @@ const confirmHandle = ()=>{
         return 
     }
     const formData = new FormData();
-
-    formData.append("file", uploaderInput.files[0]);
+    if(uploaderInput.files[0]){
+        formData.append("file", uploaderInput.files[0]);
+    }
     formData.set("warship", warship.innerHTML);
     formData.set("legion", legionInput.value);
     formData.set("playerName", playerName.value);

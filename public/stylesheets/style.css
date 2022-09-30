@@ -73,3 +73,17 @@ body {
   position:absolute;
   right: 24px;
 }
+
+.w100{
+  width:100%;
+}
+
+.space-between{
+  display: flex;
+  justify-content: space-between;
+}
+
+.small-tag{
+  width:36px;
+  font-size:12px;
+}

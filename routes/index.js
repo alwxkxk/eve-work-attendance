@@ -25,7 +25,6 @@ router.get('/', function(req, res, next) {
 
 // 发起出勤统计页面
 router.get('/start-attendance', function(req, res, next) {
-
   res.render('start-attendance');
 });
 
@@ -97,7 +96,9 @@ router.get('/attendance-report/attendanceId/:attendanceId', (req, res, next)=> {
 // 出勤数据列表
 router.get('/attendance-report/list/attendanceId/:attendanceId', (req, res, next)=> {
   const attendanceId = req.params.attendanceId
-  db.find('append_attendance',{attendanceId:attendanceId}).then(val=>val.toArray()).then(val=>{
+  db.find('append_attendance',{attendanceId:attendanceId})
+  .then(val=>val.sort({_id:-1}) .limit(50).toArray())
+  .then(val=>{
     res.json(val);
   })
 });
@@ -106,27 +107,78 @@ router.get('/attendance-report/list/attendanceId/:attendanceId', (req, res, next
 router.post('/attendance-report',upload.none(), (req, res, next)=> {
   const body = req.body
   const pwdObj = config.pwd
-  db.updateOne('start_attendance',{attendanceId:body.attendanceId},{status:2})
+
 
   if(pwdObj[body.commander] && pwdObj[body.commander] === body.pwd){
     const rejectIdList = body.rejectIdList.split(',')
+    let result = {
+      total:0
+    }
     db.find('append_attendance',{attendanceId:body.attendanceId}).then(cursor=>{
       cursor.forEach(i=>{
         const id = i._id.toString()
+        console.log('id',id)
         // string 与 ObjectId() 是不一样的，需要转换，toString / ObjectId(id)
         if(rejectIdList.includes(id)){
+          // 拒绝
           db.updateOne('append_attendance',{_id:i._id},{status:3})
         }else{
+
+          if(!result[i.legion]){
+            result[i.legion] = 1
+          }else{
+            result[i.legion] += 1
+          }
+          result.total += 1
           db.updateOne('append_attendance',{_id:i._id},{status:2})
         }
+
         
-      });
+      }).then(()=>{
+        // 将结果存入到result
+        console.log('result',result)
+        db.updateOne('start_attendance',{attendanceId:body.attendanceId},{status:2,result:result})
+      })
+
     })
+
+    
     res.json({msg:'操作成功'});
   }else{
     res.json({err:'指挥密码错误'});
   }
 });
+
+// 个人出勤查询页面
+router.get('/person-attendance-list', (req, res, next)=> {
+  res.render('person-attendance-list');
+})
+
+// 个人出勤查询接口
+router.get('/person-attendance/:playerName', (req, res, next)=> {
+  // console.log('playerName',req.params)
+  db.find('append_attendance',{playerName:req.params.playerName})
+    .then(val=>val.sort({_id:-1}) .limit(50).toArray())
+    .then(val=>{
+      res.json(val);
+    })
+})
+
+// 出勤统计列表页面
+router.get('/attendance-list', (req, res, next)=> {
+  // console.log('playerName',req.params)
+  res.render('attendance-list');
+})
+
+// 出勤统计列表页面的数据
+router.get('/attendance-list/data', (req, res, next)=> {
+  // console.log('playerName',req.params)
+  db.find('start_attendance')
+  .then(val=>val.sort({_id:-1}) .limit(50).toArray())
+  .then(val=>{
+    res.json(val);
+  })
+})
 
 
 module.exports = router;

@@ -1,0 +1,21 @@
+extends mobile-layout
+
+block content
+    .page
+        h1.text-center 个人出勤记录查询
+
+        #echart(style='width:90vw;height:240px;margin:auto;')
+
+        .weui-form
+            label.weui-cell.weui-cell_active(for='playerName')
+                .weui-cell__hd
+                    span.weui-label 名称
+                    .weui-cell__desc 角色名
+                .weui-cell__bd
+                    input#playerName.weui-input
+        a#confirmBtn.weui-btn.weui-btn_primary(href='javascript:' role='button' style='margin-top:36px;') 查询
+
+        #resultList.card
+
+    script(src='/javascripts/echarts.min.js')
+    script(src='/javascripts/person-attendance-list.js')

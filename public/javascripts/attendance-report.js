@@ -3,6 +3,7 @@ const attendanceId = window.location.href.split('/').pop()
 const infoList = document.querySelector('#infoList')
 
 // echart图表
+
 const showEchart=(result)=>{
     const chartDom = document.getElementById('echart');
     const myChart = echarts.init(chartDom);
@@ -82,9 +83,15 @@ fetch(`/attendance-report/list/attendanceId/${attendanceId}`)
 
             const playerName = document.createTextNode(element.playerName);
             contain.appendChild(playerName)
-            contain.addEventListener('mousedown',()=>showImage(element.imgFileName))
-            contain.addEventListener('touchEnd',()=>showImage(element.imgFileName))
 
+            if(element.imgFileName){
+                const img = document.createElement("span")
+                img.innerHTML = '(截图)'
+                warship.appendChild(img)
+                img.addEventListener('mousedown',()=>showImage(element.imgFileName))
+                img.addEventListener('touchEnd',()=>showImage(element.imgFileName))
+            }
+           
             infoList.appendChild(contain)
         });
         showEchart(result)
