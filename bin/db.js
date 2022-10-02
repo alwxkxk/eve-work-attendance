@@ -15,7 +15,7 @@ async function initDb(){
     db.collection('start_attendance').createIndex({attendanceId:1});
     db.collection('append_attendance').createIndex({attendanceId:1});
 }
-const initDbPromise = initDb()
+const initDbPromise = initDb().catch(e=>{console.log('initDbPromise:',e)})
 
 function insert(collectionName,data) {
     return initDbPromise.then(()=>{

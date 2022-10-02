@@ -20,9 +20,6 @@ commanderPicker.addEventListener('mousedown',()=>{
     }, {
         label: '贠总',
         value: '贠总'
-    }, {
-        label: '其它',
-        value: '其它'
     }
 
 ], {
@@ -49,6 +46,9 @@ confirmBtn.addEventListener('mousedown',()=>{
     formData.set('commander',commander.innerHTML)
     formData.set('time',timeInput.value)
     formData.set('uniCode',uniCodeInput.value)
+
+
+
     const options={
         method: "POST",
         body: formData,
@@ -61,17 +61,21 @@ confirmBtn.addEventListener('mousedown',()=>{
             const appendLinkContainer = document.querySelector('#appendLinkContainer')
             const link = `${window.location.origin}/append-attendance/attendanceId/${data.attendanceId}`
             appendLink.value = link
-            navigator.clipboard.writeText(link).then(function() {
-                const toast = document.querySelector('#toast')
-                toast.style.display = 'block'
-                appendLinkContainer.style.display = 'block'
-                setTimeout(() => {
-                    toast.style.display = 'none'
-                }, 1000);
-                // console.log('Async: Copying to clipboard was successful!');
-            }, function(err) {
-                console.error('Async: Could not copy text: ', err);
-            });
+            appendLinkContainer.style.display = 'block'
+            // 必须要有HTTPS
+            if(navigator.clipboard){
+                navigator.clipboard.writeText(link).then(function() {
+                    const toast = document.querySelector('#toast')
+                    toast.style.display = 'block'
+                    setTimeout(() => {
+                        toast.style.display = 'none'
+                    }, 1000);
+                    // console.log('Async: Copying to clipboard was successful!');
+                }, function(err) {
+                    console.error('Async: Could not copy text: ', err);
+                });
+            }
+
             
         })
 })

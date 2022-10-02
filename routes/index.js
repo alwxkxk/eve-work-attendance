@@ -55,23 +55,38 @@ router.get('/append-attendance/attendanceId/:attendanceId', function(req, res, n
 // 玩家填写 出勤页面 提交数据
 router.post('/append-attendance',upload.single('file'),async function(req, res, next) {
   //保存文件信息到数据库，然后返回时返回原来的
-  const fileName = req.file.filename
+  
   const body = req.body
   db.findOne('start_attendance',{attendanceId:body.attendanceId}).then(val=>{
     if(val.status === 2){
       res.json({err:'该集结已结束'});
     }else{
-      const p1 = db.insert('img',{name:fileName,type:req.file.mimetype.split('/')[1]})
-      const p2 = db.insert('append_attendance',{
-        warship:body.warship,
-        legion:body.legion,
-        playerName:body.playerName,
-        attendanceId:body.attendanceId,
-        imgFileName:fileName
-      })
-      Promise.all([p1,p2]).then(()=>{
-        res.json({msg:'操作成功'});
-      })
+      if(req.file){
+        const fileName = req.file.filename
+        const p1 = db.insert('img',{name:fileName,type:req.file.mimetype.split('/')[1]})
+        const p2 = db.insert('append_attendance',{
+          warship:body.warship,
+          legion:body.legion,
+          playerName:body.playerName,
+          attendanceId:body.attendanceId,
+          imgFileName:fileName
+        })
+        Promise.all([p1,p2]).then(()=>{
+          res.json({msg:'操作成功'});
+        })
+      }else{
+        const p2 = db.insert('append_attendance',{
+          warship:body.warship,
+          legion:body.legion,
+          playerName:body.playerName,
+          attendanceId:body.attendanceId,
+        })
+        Promise.all([p2]).then(()=>{
+          res.json({msg:'操作成功'});
+        })
+      }
+
+
     }
   })
 
